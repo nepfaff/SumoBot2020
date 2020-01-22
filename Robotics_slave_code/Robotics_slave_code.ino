@@ -1,8 +1,6 @@
-/*
-   Arduino Robot Car Wireless Control using the HC-05 Bluetooth
-             == SLAVE DEVICE - Arduino robot car ==
-   by Dejan Nedelkovski, www.HowToMechatronics.com
-*/
+#include <SoftwareSerial.h>
+SoftwareSerial BTSerial(3, 11);
+
 #define enA 9
 #define in1 4
 #define in2 5
@@ -21,23 +19,22 @@ void setup() {
   pinMode(in2, OUTPUT);
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
-  Serial.begin(38400); // Default communication rate of the Bluetooth module
+  BTSerial.begin(38400); //use for bluetooth
+  Serial.begin(38400); // for logging
 }
 void loop() {
  // Default value - no movement when the Joystick stays in the center
   x = 510 / 4;
   y = 510 / 4;
   // Read the incoming data from the Joystick, or the master Bluetooth device
-  Serial.println(Serial.available());
-  Serial.println("x:");
-  Serial.println(Serial.read());
-  while (Serial.available() >= 2) {
-    x = Serial.read();
+
+  while (BTSerial.available() >= 2) {
+    x = BTSerial.read();
     //testing: remove serial.print bbefore deplozment for performance!
     Serial.print("x: ");
     Serial.println(x);
     delay(10);
-    y = Serial.read();
+    y = BTSerial.read();
     Serial.print("y: ");
     Serial.println(y);
   }
